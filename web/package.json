@@ -1,0 +1,6 @@
+{
+  "name": "youtube-pipeline-dashboard",
+  "private": true,
+  "scripts": {"build:css": "tailwindcss -i ./theme.css -o ./static/styles.css --minify"},
+  "devDependencies": {"tailwindcss": "^4.3.0", "@tailwindcss/cli": "^4.3.0"}
+}
