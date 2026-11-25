@@ -1,0 +1,585 @@
+{
+  "$defs": {
+    "ApprovalConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "default": "interactive",
+          "enum": [
+            "interactive",
+            "file"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "optional": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "propertyNames": {
+            "enum": [
+              "pesquisa_titulos",
+              "thumbnail",
+              "roteiro",
+              "plano_visual",
+              "narracao",
+              "imagens",
+              "edicao"
+            ]
+          },
+          "title": "Optional",
+          "type": "object"
+        }
+      },
+      "title": "ApprovalConfig",
+      "type": "object"
+    },
+    "Channel": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "niche": {
+          "minLength": 1,
+          "title": "Niche",
+          "type": "string"
+        },
+        "audience": {
+          "minLength": 1,
+          "title": "Audience",
+          "type": "string"
+        },
+        "language": {
+          "minLength": 1,
+          "title": "Language",
+          "type": "string"
+        },
+        "tone": {
+          "minLength": 1,
+          "title": "Tone",
+          "type": "string"
+        },
+        "aesthetic": {
+          "minLength": 1,
+          "title": "Aesthetic",
+          "type": "string"
+        },
+        "rules": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Rules",
+          "type": "array"
+        },
+        "target_duration_seconds": {
+          "default": 300,
+          "maximum": 14400,
+          "minimum": 5,
+          "title": "Target Duration Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "niche",
+        "audience",
+        "language",
+        "tone",
+        "aesthetic"
+      ],
+      "title": "Channel",
+      "type": "object"
+    },
+    "EditingConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "default": 1920,
+          "maximum": 3840,
+          "minimum": 160,
+          "multipleOf": 2,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "default": 1080,
+          "maximum": 3840,
+          "minimum": 90,
+          "multipleOf": 2,
+          "title": "Height",
+          "type": "integer"
+        },
+        "fps": {
+          "default": 30,
+          "maximum": 60,
+          "minimum": 1,
+          "title": "Fps",
+          "type": "integer"
+        },
+        "preset": {
+          "default": "medium",
+          "enum": [
+            "ultrafast",
+            "fast",
+            "medium",
+            "slow"
+          ],
+          "title": "Preset",
+          "type": "string"
+        },
+        "crf": {
+          "default": 20,
+          "maximum": 51,
+          "minimum": 0,
+          "title": "Crf",
+          "type": "integer"
+        },
+        "ffmpeg": {
+          "default": "ffmpeg",
+          "minLength": 1,
+          "title": "Ffmpeg",
+          "type": "string"
+        },
+        "ffprobe": {
+          "default": "ffprobe",
+          "minLength": 1,
+          "title": "Ffprobe",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 3600,
+          "maximum": 86400,
+          "minimum": 10,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "title": "EditingConfig",
+      "type": "object"
+    },
+    "ImageAPI": {
+      "additionalProperties": false,
+      "properties": {
+        "base_url": {
+          "default": "https://api.openai.com/v1",
+          "minLength": 1,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "api_key_env": {
+          "default": "OPENAI_API_KEY",
+          "minLength": 1,
+          "title": "Api Key Env",
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 180,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Timeout Seconds",
+          "type": "number"
+        },
+        "size": {
+          "default": "1536x1024",
+          "minLength": 1,
+          "title": "Size",
+          "type": "string"
+        }
+      },
+      "required": [
+        "model"
+      ],
+      "title": "ImageAPI",
+      "type": "object"
+    },
+    "MediaConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "default": "generated",
+          "enum": [
+            "generated",
+            "library"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "library": {
+          "items": {
+            "$ref": "#/$defs/MediaItem"
+          },
+          "title": "Library",
+          "type": "array"
+        }
+      },
+      "title": "MediaConfig",
+      "type": "object"
+    },
+    "MediaItem": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "format": "path",
+          "title": "Path",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Tags",
+          "type": "array"
+        },
+        "license": {
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "tags",
+        "license",
+        "source"
+      ],
+      "title": "MediaItem",
+      "type": "object"
+    },
+    "NarrationConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "default": "api",
+          "enum": [
+            "api",
+            "files"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "files": {
+          "patternProperties": {
+            "^[a-zA-Z0-9_-]+$": {
+              "format": "path",
+              "type": "string"
+            }
+          },
+          "title": "Files",
+          "type": "object"
+        }
+      },
+      "title": "NarrationConfig",
+      "type": "object"
+    },
+    "ResearchConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "default": "provided",
+          "enum": [
+            "provided",
+            "youtube"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "youtube_api_key_env": {
+          "default": "YOUTUBE_API_KEY",
+          "minLength": 1,
+          "title": "Youtube Api Key Env",
+          "type": "string"
+        },
+        "region": {
+          "default": "US",
+          "minLength": 1,
+          "title": "Region",
+          "type": "string"
+        },
+        "queries": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Queries",
+          "type": "array"
+        },
+        "max_results": {
+          "default": 10,
+          "maximum": 50,
+          "minimum": 1,
+          "title": "Max Results",
+          "type": "integer"
+        },
+        "title_count": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Title Count",
+          "type": "integer"
+        }
+      },
+      "title": "ResearchConfig",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "excerpt": {
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "url",
+        "excerpt"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "SpeechAPI": {
+      "additionalProperties": false,
+      "properties": {
+        "base_url": {
+          "default": "https://api.openai.com/v1",
+          "minLength": 1,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "api_key_env": {
+          "default": "OPENAI_API_KEY",
+          "minLength": 1,
+          "title": "Api Key Env",
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 180,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Timeout Seconds",
+          "type": "number"
+        },
+        "voice": {
+          "default": "alloy",
+          "minLength": 1,
+          "title": "Voice",
+          "type": "string"
+        },
+        "speed": {
+          "default": 1.0,
+          "maximum": 4.0,
+          "minimum": 0.25,
+          "title": "Speed",
+          "type": "number"
+        },
+        "instructions": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instructions"
+        }
+      },
+      "required": [
+        "model"
+      ],
+      "title": "SpeechAPI",
+      "type": "object"
+    },
+    "TextAPI": {
+      "additionalProperties": false,
+      "properties": {
+        "base_url": {
+          "default": "https://api.openai.com/v1",
+          "minLength": 1,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "api_key_env": {
+          "default": "OPENAI_API_KEY",
+          "minLength": 1,
+          "title": "Api Key Env",
+          "type": "string"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 180,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Timeout Seconds",
+          "type": "number"
+        },
+        "max_tokens": {
+          "default": 12000,
+          "maximum": 100000,
+          "minimum": 256,
+          "title": "Max Tokens",
+          "type": "integer"
+        },
+        "json_mode": {
+          "default": true,
+          "title": "Json Mode",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "model"
+      ],
+      "title": "TextAPI",
+      "type": "object"
+    },
+    "ThumbnailConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "variants": {
+          "default": 2,
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Variants",
+          "type": "integer"
+        },
+        "prompt": {
+          "default": "Strong focal point, readable at small sizes, uncluttered composition.",
+          "minLength": 1,
+          "title": "Prompt",
+          "type": "string"
+        }
+      },
+      "title": "ThumbnailConfig",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "channel": {
+      "$ref": "#/$defs/Channel"
+    },
+    "text": {
+      "$ref": "#/$defs/TextAPI"
+    },
+    "image": {
+      "$ref": "#/$defs/ImageAPI"
+    },
+    "speech": {
+      "$ref": "#/$defs/SpeechAPI"
+    },
+    "research": {
+      "$ref": "#/$defs/ResearchConfig"
+    },
+    "thumbnail": {
+      "$ref": "#/$defs/ThumbnailConfig"
+    },
+    "narration": {
+      "$ref": "#/$defs/NarrationConfig"
+    },
+    "media": {
+      "$ref": "#/$defs/MediaConfig"
+    },
+    "editing": {
+      "$ref": "#/$defs/EditingConfig"
+    },
+    "approvals": {
+      "$ref": "#/$defs/ApprovalConfig"
+    },
+    "prompts": {
+      "additionalProperties": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "propertyNames": {
+        "enum": [
+          "pesquisa_titulos",
+          "thumbnail",
+          "roteiro",
+          "plano_visual",
+          "narracao",
+          "imagens",
+          "edicao"
+        ]
+      },
+      "title": "Prompts",
+      "type": "object"
+    },
+    "output_root": {
+      "default": "../../runs",
+      "format": "path",
+      "title": "Output Root",
+      "type": "string"
+    }
+  },
+  "required": [
+    "channel",
+    "text",
+    "image",
+    "speech"
+  ],
+  "title": "Config",
+  "type": "object"
+}
