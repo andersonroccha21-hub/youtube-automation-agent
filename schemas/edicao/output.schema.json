@@ -1,0 +1,521 @@
+{
+  "$defs": {
+    "Artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "video",
+            "audio",
+            "json",
+            "text"
+          ],
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "kind"
+      ],
+      "title": "Artifact",
+      "type": "object"
+    },
+    "Assets": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/VisualAsset"
+          },
+          "minItems": 1,
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "Assets",
+      "type": "object"
+    },
+    "AudioSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "section_id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Section Id",
+          "type": "string"
+        },
+        "audio": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "duration_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "section_id",
+        "audio",
+        "duration_seconds"
+      ],
+      "title": "AudioSegment",
+      "type": "object"
+    },
+    "Narration": {
+      "additionalProperties": false,
+      "properties": {
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/AudioSegment"
+          },
+          "minItems": 1,
+          "title": "Segments",
+          "type": "array"
+        }
+      },
+      "required": [
+        "segments"
+      ],
+      "title": "Narration",
+      "type": "object"
+    },
+    "Research": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Title"
+          },
+          "minItems": 1,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "selected_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected Id"
+        }
+      },
+      "required": [
+        "summary",
+        "sources",
+        "candidates"
+      ],
+      "title": "Research",
+      "type": "object"
+    },
+    "Scene": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "section_id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Section Id",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "prompt": {
+          "minLength": 1,
+          "title": "Prompt",
+          "type": "string"
+        },
+        "search_terms": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Search Terms",
+          "type": "array"
+        },
+        "weight": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "title": "Weight",
+          "type": "number"
+        },
+        "media_type": {
+          "default": "image",
+          "enum": [
+            "image",
+            "video"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "section_id",
+        "description",
+        "prompt",
+        "search_terms"
+      ],
+      "title": "Scene",
+      "type": "object"
+    },
+    "Script": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "sections": {
+          "items": {
+            "$ref": "#/$defs/Section"
+          },
+          "minItems": 1,
+          "title": "Sections",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "sections"
+      ],
+      "title": "Script",
+      "type": "object"
+    },
+    "Section": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "heading": {
+          "minLength": 1,
+          "title": "Heading",
+          "type": "string"
+        },
+        "narration": {
+          "maxLength": 3500,
+          "minLength": 1,
+          "title": "Narration",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "heading",
+        "narration"
+      ],
+      "title": "Section",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "excerpt": {
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "url",
+        "excerpt"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "ThumbnailCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "prompt": {
+          "minLength": 1,
+          "title": "Prompt",
+          "type": "string"
+        },
+        "image": {
+          "$ref": "#/$defs/Artifact"
+        }
+      },
+      "required": [
+        "id",
+        "prompt",
+        "image"
+      ],
+      "title": "ThumbnailCandidate",
+      "type": "object"
+    },
+    "Thumbnails": {
+      "additionalProperties": false,
+      "properties": {
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/ThumbnailCandidate"
+          },
+          "minItems": 1,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "selected_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected Id"
+        }
+      },
+      "required": [
+        "candidates"
+      ],
+      "title": "Thumbnails",
+      "type": "object"
+    },
+    "Title": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "angle": {
+          "minLength": 1,
+          "title": "Angle",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "angle",
+        "rationale",
+        "source_ids"
+      ],
+      "title": "Title",
+      "type": "object"
+    },
+    "Video": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "duration_seconds": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Seconds",
+          "type": "number"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "demo": {
+          "title": "Demo",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "file",
+        "duration_seconds",
+        "width",
+        "height",
+        "demo"
+      ],
+      "title": "Video",
+      "type": "object"
+    },
+    "VisualAsset": {
+      "additionalProperties": false,
+      "properties": {
+        "scene_id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Scene Id",
+          "type": "string"
+        },
+        "media": {
+          "$ref": "#/$defs/Artifact"
+        },
+        "provenance": {
+          "minLength": 1,
+          "title": "Provenance",
+          "type": "string"
+        },
+        "license": {
+          "minLength": 1,
+          "title": "License",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scene_id",
+        "media",
+        "provenance",
+        "license"
+      ],
+      "title": "VisualAsset",
+      "type": "object"
+    },
+    "VisualPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "scenes": {
+          "items": {
+            "$ref": "#/$defs/Scene"
+          },
+          "minItems": 1,
+          "title": "Scenes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "scenes"
+      ],
+      "title": "VisualPlan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "topic": {
+      "minLength": 1,
+      "title": "Topic",
+      "type": "string"
+    },
+    "research": {
+      "$ref": "#/$defs/Research"
+    },
+    "thumbnail": {
+      "$ref": "#/$defs/Thumbnails"
+    },
+    "script": {
+      "$ref": "#/$defs/Script"
+    },
+    "visual_plan": {
+      "$ref": "#/$defs/VisualPlan"
+    },
+    "narration": {
+      "$ref": "#/$defs/Narration"
+    },
+    "assets": {
+      "$ref": "#/$defs/Assets"
+    },
+    "video": {
+      "$ref": "#/$defs/Video"
+    }
+  },
+  "required": [
+    "topic",
+    "research",
+    "thumbnail",
+    "script",
+    "visual_plan",
+    "narration",
+    "assets",
+    "video"
+  ],
+  "title": "EditOutput",
+  "type": "object"
+}
