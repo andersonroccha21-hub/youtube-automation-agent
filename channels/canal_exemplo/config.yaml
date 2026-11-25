@@ -1,0 +1,72 @@
+schema_version: 1
+channel:
+  id: canal_exemplo
+  name: Canal Exemplo
+  niche: Ciência no cotidiano
+  audience: Pessoas curiosas que buscam explicações acessíveis
+  language: pt-BR
+  tone: Claro, curioso e didático
+  aesthetic: Ilustração editorial limpa, azul escuro e detalhes turquesa
+  target_duration_seconds: 180
+  rules:
+    - Não inventar números, citações ou fontes.
+    - Explicar termos técnicos com exemplos concretos.
+    - Evitar promessas sensacionalistas.
+
+# Modelos e endpoints são exemplos configuráveis. Confirme disponibilidade na sua conta.
+# Somente os NOMES das variáveis de ambiente vão no YAML; nunca as chaves.
+text:
+  base_url: https://api.openai.com/v1
+  api_key_env: OPENAI_API_KEY
+  model: gpt-4o-mini
+  max_tokens: 12000
+  json_mode: true
+image:
+  base_url: https://api.openai.com/v1
+  api_key_env: OPENAI_API_KEY
+  model: gpt-image-1
+  size: 1536x1024
+speech:
+  base_url: https://api.openai.com/v1
+  api_key_env: OPENAI_API_KEY
+  model: tts-1
+  voice: alloy
+  speed: 1.0
+
+research:
+  provider: provided  # Ou youtube para pesquisa real pela YouTube Data API.
+  title_count: 3
+  sources: []  # Preencha com evidências reais antes de executar em produção; ver README.
+  # youtube_api_key_env: YOUTUBE_API_KEY
+  # region: BR
+  # queries: [ciência no cotidiano]
+  # max_results: 10
+thumbnail:
+  variants: 2
+  prompt: Um único foco visual, contraste alto e composição legível em tamanho pequeno.
+narration:
+  provider: api  # Ou files, com files: {section_id: assets/audio.wav}.
+media:
+  provider: generated  # Ou library para imagens e B-roll locais com tags e licença.
+  library: []
+editing:
+  width: 1280
+  height: 720
+  fps: 24
+  preset: fast
+  crf: 20
+approvals:
+  mode: interactive  # Sem terminal interativo, pausa e permite aprovação pelo CLI.
+  optional:
+    roteiro: false
+    plano_visual: false
+    narracao: false
+    imagens: false
+    edicao: false
+prompts:
+  pesquisa_titulos: Explore dúvidas concretas do público e justifique cada ângulo com evidências.
+  thumbnail: A imagem deve complementar o título aprovado.
+  roteiro: Abra com uma pergunta concreta e entregue a resposta ao longo do roteiro.
+  plano_visual: Priorize cenas explicativas ligadas ao significado de cada seção.
+  imagens: Preserve continuidade de cores, iluminação e estilo entre as cenas.
+output_root: ../../runs
