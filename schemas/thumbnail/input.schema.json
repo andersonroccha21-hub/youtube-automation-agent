@@ -1,0 +1,144 @@
+{
+  "$defs": {
+    "Research": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Title"
+          },
+          "minItems": 1,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "selected_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-zA-Z0-9_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected Id"
+        }
+      },
+      "required": [
+        "summary",
+        "sources",
+        "candidates"
+      ],
+      "title": "Research",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "excerpt": {
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "url",
+        "excerpt"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Title": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "angle": {
+          "minLength": 1,
+          "title": "Angle",
+          "type": "string"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "angle",
+        "rationale",
+        "source_ids"
+      ],
+      "title": "Title",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "topic": {
+      "minLength": 1,
+      "title": "Topic",
+      "type": "string"
+    },
+    "research": {
+      "$ref": "#/$defs/Research"
+    }
+  },
+  "required": [
+    "topic",
+    "research"
+  ],
+  "title": "ResearchOutput",
+  "type": "object"
+}
