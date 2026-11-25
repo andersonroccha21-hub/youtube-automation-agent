@@ -1,0 +1,15 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "topic": {
+      "minLength": 1,
+      "title": "Topic",
+      "type": "string"
+    }
+  },
+  "required": [
+    "topic"
+  ],
+  "title": "Brief",
+  "type": "object"
+}
